@@ -7,11 +7,11 @@ from llama_index.indices.postprocessor import SimilarityPostprocessor
 from llama_index import SimpleDirectoryReader
 import time
 
-documents = SimpleDirectoryReader('D:/NLP/practice/data').load_data()
-print("4")
+documents = SimpleDirectoryReader('data').load_data()
+# print("4")
 # build index
 index = GPTKeywordTableIndex.from_documents(documents)
-print("5")
+# print("5")
 # configure retriever
 retriever = index.as_retriever(retriever_mode="default")
 
@@ -22,14 +22,14 @@ response_synthesizer = ResponseSynthesizer.from_args(
    ],
     response_mode="compact"
 )
-print("3")
+# print("3")
 query_engine = RetrieverQueryEngine(retriever)
 response = query_engine.query("IIT Madras Aerospace Engineering closing rank for Open category Gender Neutral?")
-print("2")
+# print("2")
 # get response
 # response.response
 str(response)
-print("1")
+# print("1")
 print(response)
 
 time.sleep(2)
