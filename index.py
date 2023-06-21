@@ -26,15 +26,13 @@ for index in indexes:
         indices.append(keyword_table_index)
 
 if indexes:
-    query = st.text_input("Enter the query")
-    documents = []
+    query_engine = index.as_query_engine()
+    responses = []
     for index in indices:
-        documents.extend(index.query(query))
+        response = query_engine.query("What did the author do growing up?")
+        responses.append(response)
 
-    # Print the results
-    for document in documents:
-        st.write(document)
-
- # Display a message if no documents are found
-    if not documents:
-        st.write("No documents found.")
+    # Print the responses for each index
+    for index, response in zip(indexes, responses):
+        st.write(f"Index: {index}")
+        st.write(f"Response: {response}")
