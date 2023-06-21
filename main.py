@@ -1,8 +1,20 @@
-from llama_index import VectorStoreIndex, SimpleDirectoryReader
+# from llama_index import SimpleDirectoryReader
 
-documents = SimpleDirectoryReader(r'D:\NLP\practice\data').load_data()
-index = VectorStoreIndex.from_documents(documents)
+# documents = SimpleDirectoryReader('D:/NLP/practice/data').load_data()
 
-query_engine = index.as_query_engine()
-response = query_engine.query("IIT Bombay Mechanical Engineering cutoff for General Category Gender neutral in the year 2022")
-print(response)
+# # from llama_index.node_parser import SimpleNodeParser
+
+# # parser = SimpleNodeParser()
+
+# # nodes = parser.get_nodes_from_documents(documents)
+
+# from llama_index import GPTKeywordTableIndex
+
+
+# index = GPTKeywordTableIndex.from_documents(documents)
+
+# query_engine = index.as_query_engine()
+# response = query_engine.query("What did the author do growing up?")
+# print(response)
+
+
