@@ -1,5 +1,5 @@
 from llama_index import Document
-from llama_index import GPTKeywordTableIndex
+from llama_index import KeywordTableIndex
 from llama_index import VectorStoreIndex
 from llama_index import TreeIndex
 import llama_index
@@ -38,7 +38,7 @@ storage_context.docstore.add_documents(nodes)
 
 index1 = VectorStoreIndex(nodes, storage_context=storage_context)
 index2 = TreeIndex(nodes, storage_context=storage_context)
-index3 = GPTKeywordTableIndex(nodes, storage_context=storage_context)
+index3 = KeywordTableIndex(nodes, storage_context=storage_context)
 
 # index1.save("./data/vector_store_index.json")
 # index2.save("./data/tree_index.json")
