@@ -7,6 +7,13 @@ from llama_index.vector_stores import SimpleVectorStore
 from llama_index.storage.index_store import SimpleIndexStore
 from llama_index import KeywordTableIndex
 from llama_index.indices.keyword_table import SimpleKeywordTableIndex
+from llama_index import ResponseSynthesizer
+from llama_index.indices.postprocessor import SimilarityPostprocessor
+from llama_index.retrievers import VectorIndexRetriever
+from llama_index.retrievers import ListIndexRetriever
+from llama_index.retrievers import TreeRootRetriever
+from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
+
 
 
 
@@ -53,9 +60,86 @@ storage_context_1 = StorageContext.from_defaults(
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="vector_store"),
 )
 
+storage_context_2 = StorageContext.from_defaults(
+    docstore=SimpleDocumentStore.from_persist_dir(persist_dir="table"),
+    vector_store=SimpleVectorStore.from_persist_dir(persist_dir="table"),
+    index_store=SimpleIndexStore.from_persist_dir(persist_dir="table"),
+)
+storage_context_3 = StorageContext.from_defaults(
+    docstore=SimpleDocumentStore.from_persist_dir(persist_dir="tree"),
+    vector_store=SimpleVectorStore.from_persist_dir(persist_dir="tree"),
+    index_store=SimpleIndexStore.from_persist_dir(persist_dir="tree"),
+)
+storage_context_4 = StorageContext.from_defaults(
+    docstore=SimpleDocumentStore.from_persist_dir(persist_dir="list"),
+    vector_store=SimpleVectorStore.from_persist_dir(persist_dir="list"),
+    index_store=SimpleIndexStore.from_persist_dir(persist_dir="list"),
+)
 
 from llama_index import load_index_from_storage, load_indices_from_storage, load_graph_from_storage
 
-indices = load_indices_from_storage(storage_context_1)
+indices1 = load_index_from_storage(storage_context_1)
+indices2 = load_index_from_storage(storage_context_2)
+indices3 = load_index_from_storage(storage_context_3)
+indices4 = load_index_from_storage(storage_context_4)
+
+retriever1 = VectorIndexRetriever(
+    index=indices1, 
+    similarity_top_k=2,
+)
+
+retriever2 = KeywordTableGPTRetriever(
+    index=indices2, 
+    similarity_top_k=2,
+)
+
+retriever3 = TreeRootRetriever(
+    index=indices3, 
+)
+
+retriever4 = ListIndexRetriever(
+    index=indices4, 
+    similarity_top_k=2,
+)
+
+response_synthesizer = ResponseSynthesizer.from_args(
+        node_postprocessors=[
+            SimilarityPostprocessor(similarity_cutoff=0.7)
+        ]
+    )
+
+query_engine_1 = RetrieverQueryEngine.from_args(
+    retriever1, response_synthesizer
+)
+query_engine_2 = RetrieverQueryEngine.from_args(
+    retriever2, response_synthesizer
+)
+query_engine_3 = RetrieverQueryEngine.from_args(
+    retriever3, response_synthesizer
+)
+query_engine_4 = RetrieverQueryEngine.from_args(
+    retriever4, response_synthesizer
+)
+
+st.title("Index Selection")
+indexes = st.multiselect("Select the indexes", ["Vector Store Index", "Tree Index", "Table Index", "List Index"])
 
 
+if not indexes:
+    st.error("Please select at least one index.")
+
+else:
+    query = st.text_input("Enter your query")
+
+    for index in indexes:
+        if index == "Vector Store":
+            responses = query_engine_1.query(query)
+        elif index == "Tree":
+            responses = query_engine_2.query(query)
+        elif index == "Table":
+            responses = query_engine_3.query(query)
+        elif index == "List":
+            responses = query_engine_4.query(query)
+
+        st.write(f"Index: {index}")
+        st.write(f"Responses: {responses}")
