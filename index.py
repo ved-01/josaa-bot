@@ -4,6 +4,7 @@ from llama_index import StorageContext, load_index_from_storage
 from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.vector_stores import SimpleVectorStore
+from llama_index.storage.index_store import SimpleIndexStore
 from llama_index import KeywordTableIndex
 from llama_index.indices.keyword_table import SimpleKeywordTableIndex
 
@@ -46,16 +47,15 @@ from llama_index.indices.keyword_table import SimpleKeywordTableIndex
 
 ###################################################################################################################################
 
-storage_context = StorageContext.from_defaults(
-    # docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
+storage_context_1 = StorageContext.from_defaults(
+    docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="vector_store"),
-    keyword_index = SimpleKeywordTableIndex(persist_dir="keyword_table"),
-    # tree_index = SimpleIndexStore.from_persist_dir(persist_dir="table"),
+    index_store=SimpleIndexStore.from_persist_dir(persist_dir="vector_store"),
 )
 
 
 from llama_index import load_index_from_storage, load_indices_from_storage, load_graph_from_storage
 
-indices = load_indices_from_storage(storage_context)
+indices = load_indices_from_storage(storage_context_1)
 
 
