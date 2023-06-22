@@ -8,20 +8,21 @@ import llama_index
 document = Document(
     'text', 
     extra_info={
-        'filename': '2020.txt',
-        'category': 'year 2020'
+        'filename': 'data.txt',
+        'category': 'Dr Kalam'
     }
 )
 
-document_2 = Document(
-    'text', 
-    extra_info={
-        'filename': '2022.txt',
-        'category': 'year 2022'
-    }
-)
+# document_2 = Document(
+#     'text', 
+#     extra_info={
+#         'filename': '2022.txt',
+#         'category': 'year 2022'
+#     }
+# )
 
-documents = [document, document_2]
+# documents = [document, document_2]
+documents = [document]
 
 from llama_index.node_parser import SimpleNodeParser
 

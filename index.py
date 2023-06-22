@@ -135,7 +135,7 @@ query_engine_4 = RetrieverQueryEngine(
     retriever4, response_synthesizer=response_synthesizer
 )
 
-response = query_engine_1.query("Institutes in the year 2020?")
+response = query_engine_1.query("What was the age of Dr. Kalam when he died?")
 print("7")
 str(response)
 print(response)
