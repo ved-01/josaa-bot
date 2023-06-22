@@ -17,6 +17,7 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 
 
 
+
 # rebuild storage context
 # storage_context_1 = StorageContext.from_defaults(persist_dir="vector_store")
 # storage_context_2 = StorageContext.from_defaults(persist_dir="tree")
@@ -53,7 +54,7 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 #         st.write(f"Response: {response}")
 
 ###################################################################################################################################
-
+print("1")
 storage_context_1 = StorageContext.from_defaults(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="vector_store"),
@@ -76,6 +77,7 @@ storage_context_4 = StorageContext.from_defaults(
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="list"),
 )
 
+print("2")
 from llama_index import load_index_from_storage, load_indices_from_storage, load_graph_from_storage
 
 indices1 = load_index_from_storage(storage_context_1)
@@ -83,6 +85,7 @@ indices2 = load_index_from_storage(storage_context_2)
 indices3 = load_index_from_storage(storage_context_3)
 indices4 = load_index_from_storage(storage_context_4)
 
+print("3")
 retriever1 = VectorIndexRetriever(
     index=indices1, 
     similarity_top_k=2,
@@ -101,45 +104,72 @@ retriever4 = ListIndexRetriever(
     index=indices4, 
     similarity_top_k=2,
 )
+print("4")
+from llama_index.indices.response import BaseResponseBuilder
 
+
+# response_builder = BaseResponseBuilder()
+# response_mode = "compact"
+
+
+# configure response synthesizer
 response_synthesizer = ResponseSynthesizer.from_args(
-        node_postprocessors=[
-            SimilarityPostprocessor(similarity_cutoff=0.7)
-        ]
-    )
-
-query_engine_1 = RetrieverQueryEngine.from_args(
-    retriever1, response_synthesizer
-)
-query_engine_2 = RetrieverQueryEngine.from_args(
-    retriever2, response_synthesizer
-)
-query_engine_3 = RetrieverQueryEngine.from_args(
-    retriever3, response_synthesizer
-)
-query_engine_4 = RetrieverQueryEngine.from_args(
-    retriever4, response_synthesizer
+    node_postprocessors=[
+        SimilarityPostprocessor(similarity_cutoff=0.7)
+    ]
 )
 
-st.title("Index Selection")
-indexes = st.multiselect("Select the indexes", ["Vector Store Index", "Tree Index", "Table Index", "List Index"])
+
+    
+print("5")
+query_engine_1 = RetrieverQueryEngine(
+    retriever1, response_synthesizer=response_synthesizer
+)
+query_engine_2 = RetrieverQueryEngine(
+    retriever2, response_synthesizer=response_synthesizer
+)
+query_engine_3 = RetrieverQueryEngine(
+    retriever3, response_synthesizer=response_synthesizer
+)
+query_engine_4 = RetrieverQueryEngine(
+    retriever4, response_synthesizer=response_synthesizer
+)
+
+response = query_engine_1.query("Institutes in the year 2020?")
+print("7")
+str(response)
+print(response)
+print("8")
+
+# print("6")
+# st.title("Index Selection")
+# indexes = st.multiselect("Select the indexes", ["Vector Store Index", "Tree Index", "Table Index", "List Index"])
 
 
-if not indexes:
-    st.error("Please select at least one index.")
+# if not indexes:
+#     st.error("Please select at least one index.")
 
-else:
-    query = st.text_input("Enter your query")
+# else:
+#     query = st.text_input("Enter your query")
 
-    for index in indexes:
-        if index == "Vector Store":
-            responses = query_engine_1.query(query)
-        elif index == "Tree":
-            responses = query_engine_2.query(query)
-        elif index == "Table":
-            responses = query_engine_3.query(query)
-        elif index == "List":
-            responses = query_engine_4.query(query)
-
-        st.write(f"Index: {index}")
-        st.write(f"Responses: {responses}")
+#     for index in indexes:
+#         if index == "Vector Store":
+#             responses = query_engine_1.query(query)
+#             print("9")
+#             st.write(responses)
+#             print("10")
+#         elif index == "Tree":
+#             responses = query_engine_2.query(query)
+#             st.write(responses)
+#         elif index == "Table":
+#             print("11")
+#             responses = query_engine_3.query(query)
+#             st.write(responses)
+#             print("12")
+#         elif index == "List":
+#             responses = query_engine_4.query(query)
+#             st.write(responses)
+#         print("7")
+#         st.write(f"Index: {index}")
+#         # st.write(f"Responses: {responses}")
+#         print("8")
