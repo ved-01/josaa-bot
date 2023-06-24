@@ -135,7 +135,7 @@ query_engine_4 = RetrieverQueryEngine(
     retriever4, response_synthesizer=response_synthesizer
 )
 
-response = query_engine_1.query("Branches in IIT Madras in the year 2022")
+response = query_engine_1.query("Are there any institutes in the year 2020?")
 print("7")
 str(response)
 print(response)
