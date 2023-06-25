@@ -135,7 +135,10 @@ query_engine_4 = RetrieverQueryEngine(
     retriever4, response_synthesizer=response_synthesizer
 )
 
-response = query_engine_1.query("Are there any institutes in the year 2020?")
+response = query_engine_1.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+print(response)
+response = query_engine_2.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+
 print("7")
 str(response)
 print(response)
