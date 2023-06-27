@@ -16,8 +16,6 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 
 
 
-
-
 # rebuild storage context
 # storage_context_1 = StorageContext.from_defaults(persist_dir="vector_store")
 # storage_context_2 = StorageContext.from_defaults(persist_dir="tree")
@@ -54,6 +52,7 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 #         st.write(f"Response: {response}")
 
 ###################################################################################################################################
+
 print("1")
 storage_context_1 = StorageContext.from_defaults(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
@@ -113,7 +112,7 @@ from llama_index.indices.response import BaseResponseBuilder
 
 
 # configure response synthesizer
-response_synthesizer = ResponseSynthesizer.from_args(
+response_synthesizer = ResponseSynthesizer(
     node_postprocessors=[
         SimilarityPostprocessor(similarity_cutoff=0.7)
     ]
