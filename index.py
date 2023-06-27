@@ -13,6 +13,9 @@ from llama_index.retrievers import VectorIndexRetriever
 from llama_index.retrievers import ListIndexRetriever
 from llama_index.retrievers import TreeRootRetriever
 from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
+from llama_index.indices.keyword_table import GPTRAKEKeywordTableIndex
+from llama_index.indices.keyword_table.retrievers import KeywordTableRAKERetriever
+
 
 
 
@@ -54,13 +57,13 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 ###################################################################################################################################
 
 print("1")
-storage_context_1 = StorageContext(
+storage_context_1 = StorageContext.from_defaults(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="vector_store"),
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="vector_store"),
 )
 
-storage_context_2 = StorageContext(
+storage_context_2 = StorageContext.from_defaults(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="table"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="table"),
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="table"),
@@ -91,13 +94,14 @@ retriever1 = VectorIndexRetriever(
 )
 
 
-retriever2 = KeywordTableGPTRetriever(
+retriever2 = KeywordTableRAKERetriever(
     index=indices2, 
     similarity_top_k=2,
 )
 
 retriever3 = TreeRootRetriever(
     index=indices3, 
+#     similarity_top_k=2,
 )
 
 retriever4 = ListIndexRetriever(
@@ -114,9 +118,8 @@ from llama_index.indices.response import BaseResponseBuilder
 
 # configure response synthesizer
 response_synthesizer = ResponseSynthesizer.from_args(
-    node_postprocessors=[
-        SimilarityPostprocessor(similarity_cutoff=0.7)
-    ]
+    # node_postprocessors=[
+    # ]
 )
 
 
@@ -141,6 +144,7 @@ response = query_engine_2.query("Tell me about Early life of Dr. Avul Pakir kala
 
 # print("7")
 str(response)
+print(response)
 # print(response)
 print("8")
 
