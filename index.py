@@ -54,13 +54,13 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 ###################################################################################################################################
 
 print("1")
-storage_context_1 = StorageContext.from_defaults(
+storage_context_1 = StorageContext(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="vector_store"),
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="vector_store"),
 )
 
-storage_context_2 = StorageContext.from_defaults(
+storage_context_2 = StorageContext(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="table"),
     vector_store=SimpleVectorStore.from_persist_dir(persist_dir="table"),
     index_store=SimpleIndexStore.from_persist_dir(persist_dir="table"),
@@ -90,6 +90,7 @@ retriever1 = VectorIndexRetriever(
     similarity_top_k=2,
 )
 
+
 retriever2 = KeywordTableGPTRetriever(
     index=indices2, 
     similarity_top_k=2,
@@ -112,7 +113,7 @@ from llama_index.indices.response import BaseResponseBuilder
 
 
 # configure response synthesizer
-response_synthesizer = ResponseSynthesizer(
+response_synthesizer = ResponseSynthesizer.from_args(
     node_postprocessors=[
         SimilarityPostprocessor(similarity_cutoff=0.7)
     ]
@@ -134,14 +135,17 @@ query_engine_4 = RetrieverQueryEngine(
     retriever4, response_synthesizer=response_synthesizer
 )
 
-response = query_engine_1.query("Tell me about Early life of Dr. Avul Pakir kalam?")
-print(response)
+# response = query_engine_1.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+# print(response)
 response = query_engine_2.query("Tell me about Early life of Dr. Avul Pakir kalam?")
 
-print("7")
+# print("7")
 str(response)
-print(response)
+# print(response)
 print("8")
+
+# response.source_nodes
+print(response.source_nodes)
 
 # print("6")
 # st.title("Index Selection")

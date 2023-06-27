@@ -4,6 +4,14 @@ from llama_index import GPTVectorStoreIndex
 from llama_index import GPTTreeIndex
 from llama_index import GPTListIndex
 import llama_index
+from llama_index.retrievers import VectorIndexRetriever
+from llama_index.retrievers import ListIndexRetriever
+from llama_index.retrievers import TreeRootRetriever
+from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
+from llama_index.storage.docstore import SimpleDocumentStore
+from llama_index.vector_stores import SimpleVectorStore
+from llama_index.storage.index_store import SimpleIndexStore
+
 
 document = Document(
     'text', 
@@ -34,8 +42,9 @@ nodes = parser.get_nodes_from_documents(documents)
 
 from llama_index import StorageContext
 
-storage_context = StorageContext.from_defaults()
-storage_context.docstore.add_documents(nodes)
+# storage_context = StorageContext.from_defaults()
+# storage_context.docstore.add_documents(nodes)
+# storage_context.docstore.add_documents(nodes)
 # storage_context.persist(persist_dir="./data")
 
 # index1 = GPTVectorStoreIndex(nodes, storage_context=storage_context)
