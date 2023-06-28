@@ -18,45 +18,6 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableRAKERetriev
 from llama_index.indices.keyword_table.retrievers import KeywordTableSimpleRetriever
 
 
-
-
-# rebuild storage context
-# storage_context_1 = StorageContext.from_defaults(persist_dir="vector_store")
-# storage_context_2 = StorageContext.from_defaults(persist_dir="tree")
-# storage_context_3 = StorageContext.from_defaults(persist_dir="table")
-
-# index = load_index_from_storage(storage_context)
-
-# Load the index files
-# vector_store_index = load_index_from_storage(storage_context_1)
-# tree_index = load_index_from_storage(storage_context_2)
-# keyword_table_index = load_index_from_storage(storage_context_3)
-
-# indexes = st.multiselect("Select the indexes", ["VectorStoreIndex", "TreeIndex", "GPTKeywordTableIndex"])
-
-# indices = []
-# for index in indexes:
-#     if index == "VectorStoreIndex":
-#         indices.append(vector_store_index)
-#     elif index == "TreeIndex":
-#         indices.append(tree_index)
-#     elif index == "GPTKeywordTableIndex":
-#         indices.append(keyword_table_index)
-
-# if indexes:
-#     query_engine = index.as_query_engine()
-#     responses = []
-#     for index in indices:
-#         response = query_engine.query("What did the author do growing up?")
-#         responses.append(response)
-
-#     # Print the responses for each index
-#     for index, response in zip(indexes, responses):
-#         st.write(f"Index: {index}")
-#         st.write(f"Response: {response}")
-
-###################################################################################################################################
-
 print("1")
 storage_context_1 = StorageContext.from_defaults(
     docstore=SimpleDocumentStore.from_persist_dir(persist_dir="vector_store"),
@@ -155,41 +116,14 @@ response = query_engine_2.query("Tell me about Early life of Dr. Avul Pakir kala
 # print("7")
 str(response)
 print(response)
+response1 = query_engine_1.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+print(response1)
+response2 = query_engine_3.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+print(response2)
+response3 = query_engine_4.query("Tell me about Early life of Dr. Avul Pakir kalam?")
+print(response3)
 # print(response)
 print("8")
 
 # response.source_nodes
 print(response.source_nodes)
-
-# print("6")
-# st.title("Index Selection")
-# indexes = st.multiselect("Select the indexes", ["Vector Store Index", "Tree Index", "Table Index", "List Index"])
-
-
-# if not indexes:
-#     st.error("Please select at least one index.")
-
-# else:
-#     query = st.text_input("Enter your query")
-
-#     for index in indexes:
-#         if index == "Vector Store":
-#             responses = query_engine_1.query(query)
-#             print("9")
-#             st.write(responses)
-#             print("10")
-#         elif index == "Tree":
-#             responses = query_engine_2.query(query)
-#             st.write(responses)
-#         elif index == "Table":
-#             print("11")
-#             responses = query_engine_3.query(query)
-#             st.write(responses)
-#             print("12")
-#         elif index == "List":
-#             responses = query_engine_4.query(query)
-#             st.write(responses)
-#         print("7")
-#         st.write(f"Index: {index}")
-#         # st.write(f"Responses: {responses}")
-#         print("8")
