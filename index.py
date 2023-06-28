@@ -13,8 +13,9 @@ from llama_index.retrievers import VectorIndexRetriever
 from llama_index.retrievers import ListIndexRetriever
 from llama_index.retrievers import TreeRootRetriever
 from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
-from llama_index.indices.keyword_table import GPTRAKEKeywordTableIndex
+from llama_index.indices.keyword_table import GPTSimpleKeywordTableIndex
 from llama_index.indices.keyword_table.retrievers import KeywordTableRAKERetriever
+from llama_index.indices.keyword_table.retrievers import KeywordTableSimpleRetriever
 
 
 
@@ -94,7 +95,7 @@ retriever1 = VectorIndexRetriever(
 )
 
 
-retriever2 = KeywordTableRAKERetriever(
+retriever2 = KeywordTableSimpleRetriever(
     index=indices2, 
     similarity_top_k=2,
 )

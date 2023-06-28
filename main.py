@@ -1,5 +1,6 @@
 from llama_index import Document
 from llama_index import GPTKeywordTableIndex
+from llama_index import GPTRAKEKeywordTableIndex
 from llama_index import GPTVectorStoreIndex
 from llama_index import GPTTreeIndex
 from llama_index import GPTListIndex
@@ -11,13 +12,13 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.vector_stores import SimpleVectorStore
 from llama_index.storage.index_store import SimpleIndexStore
-
+from llama_index import GPTSimpleKeywordTableIndex
 
 document = Document(
     'text', 
     extra_info={
         'filename': 'data.txt',
-        'category': 'Data about DRAM'
+        'category': 'data about Dr. Kalam'
     }
 )
 
@@ -54,7 +55,8 @@ from llama_index import StorageContext
 
 index1 = GPTVectorStoreIndex(nodes)
 index2 = GPTTreeIndex(nodes)
-index3 = GPTKeywordTableIndex(nodes)
+# index3 = GPTRAKEKeywordTableIndex(nodes)
+index3 = GPTSimpleKeywordTableIndex(nodes)
 index4 = GPTListIndex(nodes)
 
 # index1.save("./data/vector_store_index.json")
