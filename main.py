@@ -12,7 +12,7 @@ from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetrieve
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.vector_stores import SimpleVectorStore
 from llama_index.storage.index_store import SimpleIndexStore
-from llama_index import GPTSimpleKeywordTableIndex
+from llama_index import RAKEKeywordTableIndex
 
 document = Document(
     'text', 
@@ -55,8 +55,8 @@ from llama_index import StorageContext
 
 index1 = GPTVectorStoreIndex(nodes)
 index2 = GPTTreeIndex(nodes)
-# index3 = GPTRAKEKeywordTableIndex(nodes)
-index3 = GPTSimpleKeywordTableIndex(nodes)
+index3 = GPTRAKEKeywordTableIndex(nodes)
+# index3 = GPTSimpleKeywordTableIndex(nodes)
 index4 = GPTListIndex(nodes)
 
 # index1.save("./data/vector_store_index.json")
