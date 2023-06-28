@@ -95,7 +95,16 @@ retriever1 = VectorIndexRetriever(
 )
 
 
-retriever2 = KeywordTableRAKERetriever(
+# retriever2 = KeywordTableRAKERetriever(
+#     index=indices2, 
+#     similarity_top_k=2,
+# )
+
+# retriever2 = KeywordTableSimpleRetriever(
+#     index=indices2, 
+#     similarity_top_k=2,
+# )
+retriever2 = KeywordTableGPTRetriever(
     index=indices2, 
     similarity_top_k=2,
 )
