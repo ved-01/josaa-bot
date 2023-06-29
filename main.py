@@ -19,7 +19,7 @@ document = Document(
     'text', 
     extra_info={
         'filename': 'data.txt',
-        'category': 'data about Dr. Kalam'
+        'category': 'Data about Biparjoy Cyclone'
     }
 )
 
