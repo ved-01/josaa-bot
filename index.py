@@ -48,6 +48,7 @@ indices1 = load_index_from_storage(storage_context_1)
 indices2 = load_index_from_storage(storage_context_2)
 indices3 = load_index_from_storage(storage_context_3)
 indices4 = load_index_from_storage(storage_context_4)
+# indices1 = load_index_from_storage(storage_context="vector_store")
 
 print("3")
 retriever1 = VectorIndexRetriever(
@@ -111,12 +112,12 @@ query_engine_4 = RetrieverQueryEngine(
 
 # response = query_engine_1.query("Tell me about Early life of Dr. Avul Pakir kalam?")
 # print(response)
-response = query_engine_2.query("Where did Biparjoy cyclone originate?")
+response = query_engine_2.query("how much was life of biparjoy cyclone?")
 
 # print("7")
 str(response)
 print(response)
-response1 = query_engine_1.query("Where did Biparjoy cyclone originate?")
+response1 = query_engine_1.query("Who is Sachin Tendulkar?")
 print(response1)
 response2 = query_engine_3.query("Where did Biparjoy cyclone originate?")
 print(response2)
@@ -127,3 +128,6 @@ print("8")
 
 # response.source_nodes
 print(response.source_nodes)
+print(response1.source_nodes)
+print(response2.source_nodes)
+print(response3.source_nodes)

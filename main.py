@@ -4,7 +4,6 @@ from llama_index import GPTRAKEKeywordTableIndex
 from llama_index import GPTVectorStoreIndex
 from llama_index import GPTTreeIndex
 from llama_index import GPTListIndex
-import llama_index
 from llama_index.retrievers import VectorIndexRetriever
 from llama_index.retrievers import ListIndexRetriever
 from llama_index.retrievers import TreeRootRetriever
@@ -15,13 +14,29 @@ from llama_index.storage.index_store import SimpleIndexStore
 from llama_index import RAKEKeywordTableIndex
 from llama_index import GPTSimpleKeywordTableIndex
 
+from llama_index import SimpleDirectoryReader
+
+# documents = SimpleDirectoryReader('./data').load_data()
+
+
 document = Document(
-    'text', 
+    'The cyclonic storm had a total life of 13 days and three hours (depression to depression), more than double the average life of severe cyclonic storms of six days and three hours over the Arabian Sea, the IMD said in a report on Biparjoy.', 
     extra_info={
         'filename': 'data.txt',
         'category': 'Data about Biparjoy Cyclone'
     }
 )
+
+import os
+
+# document = Document(
+#     os.path.join('data', 'data.txt'), 
+#     extra_info={
+#         'filename': 'data.txt',
+#         'category': 'Data about Biparjoy Cyclone'
+#     }
+# )
+
 
 # document_2 = Document(
 #     'text', 
@@ -40,12 +55,15 @@ parser = SimpleNodeParser()
 
 nodes = parser.get_nodes_from_documents(documents)
 
+
+
+
 # index = llama_index.GPTKeywordTableIndex(nodes)
 
 from llama_index import StorageContext
 
-# storage_context = StorageContext.from_defaults()
-# storage_context.docstore.add_documents(nodes)
+storage_context = StorageContext.from_defaults()
+storage_context.docstore.add_documents(nodes)
 # storage_context.docstore.add_documents(nodes)
 # storage_context.persist(persist_dir="./data")
 
