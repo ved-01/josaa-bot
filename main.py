@@ -19,15 +19,15 @@ from llama_index import SimpleDirectoryReader
 # documents = SimpleDirectoryReader('./data').load_data()
 
 
-document = Document(
-    'The cyclonic storm had a total life of 13 days and three hours (depression to depression), more than double the average life of severe cyclonic storms of six days and three hours over the Arabian Sea, the IMD said in a report on Biparjoy.', 
-    extra_info={
-        'filename': 'data.txt',
-        'category': 'Data about Biparjoy Cyclone'
-    }
-)
+# document = Document(
+#     'The cyclonic storm had a total life of 13 days and three hours (depression to depression), more than double the average life of severe cyclonic storms of six days and three hours over the Arabian Sea, the IMD said in a report on Biparjoy.', 
+#     extra_info={
+#         'filename': 'data.txt',
+#         'category': 'Data about Biparjoy Cyclone'
+#     }
+# )
 
-import os
+
 
 # document = Document(
 #     os.path.join('data', 'data.txt'), 
@@ -47,16 +47,33 @@ import os
 # )
 
 # documents = [document, document_2]
-documents = [document]
+
+############################################### working code
+# documents = [document]
 
 from llama_index.node_parser import SimpleNodeParser
 
+# parser = SimpleNodeParser()
+
+# nodes = parser.get_nodes_from_documents(documents)
+
+#################################################
+
+
+from llama_index import SimpleDirectoryReader, Document
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+document = SimpleDirectoryReader('data').load_data()[0]
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=100)
+text_chunks = text_splitter.split_text(document.text)
+
+doc_chunks = [Document(text=t,extra_info={'filename': 'data.txt','category': 'Data about Biparjoy Cyclone'}) for t in text_chunks]
+
+
 parser = SimpleNodeParser()
 
-nodes = parser.get_nodes_from_documents(documents)
-
-
-
+nodes = parser.get_nodes_from_documents(doc_chunks)
 
 # index = llama_index.GPTKeywordTableIndex(nodes)
 
@@ -74,9 +91,9 @@ storage_context.docstore.add_documents(nodes)
 
 index1 = GPTVectorStoreIndex(nodes)
 index2 = GPTTreeIndex(nodes)
-# index3 = GPTRAKEKeywordTableIndex(nodes)
+index3 = GPTRAKEKeywordTableIndex(nodes)
 # index3 = GPTSimpleKeywordTableIndex(nodes)
-index3 = GPTKeywordTableIndex(nodes)
+# index3 = GPTKeywordTableIndex(nodes)
 index4 = GPTListIndex(nodes)
 
 # index1.save("./data/vector_store_index.json")
