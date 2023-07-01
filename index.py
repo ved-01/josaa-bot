@@ -4,18 +4,26 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.vector_stores import SimpleVectorStore
 from llama_index.storage.index_store import SimpleIndexStore
-from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
-from llama_index.retrievers import VectorIndexRetriever, TreeRootRetriever, ListIndexRetriever
+from llama_index import KeywordTableIndex
+from llama_index.indices.keyword_table import SimpleKeywordTableIndex
 from llama_index import ResponseSynthesizer
+from llama_index.indices.postprocessor import SimilarityPostprocessor
+from llama_index.retrievers import VectorIndexRetriever
+from llama_index.retrievers import ListIndexRetriever
+from llama_index.retrievers import TreeRootRetriever
+from llama_index.indices.keyword_table.retrievers import KeywordTableGPTRetriever
 from llama_index.indices.keyword_table.retrievers import KeywordTableRAKERetriever
+from llama_index.indices.keyword_table.retrievers import KeywordTableSimpleRetriever
+from llama_index import LLMPredictor
+from langchain.chat_models import ChatOpenAI
+from llama_index import ServiceContext
+from llama_index import Prompt
 
 
-# Set up Streamlit layout
-st.title("LLAMA Index Query App")
+st.title("Josaa Query App")
 index_options = ["Vector Index", "Table Index", "Tree Index", "List Index"]
-selected_indexes = st.multiselect("Select Index(es)", index_options)
+selected_indexes = st.multiselect("Select Index", index_options)
 
-# Load indexes based on user selection
 indices = []
 retrievers = []
 for index in selected_indexes:
@@ -36,7 +44,7 @@ for index in selected_indexes:
             index_store=SimpleIndexStore.from_persist_dir(persist_dir="table"),
         )
         index = load_index_from_storage(storage_context)
-        retriever = KeywordTableRAKERetriever(index=index, similarity_top_k=2)
+        retriever = KeywordTableGPTRetriever(index=index, similarity_top_k=2)
         indices.append(index)
         retrievers.append(retriever)
     elif index == "Tree Index":
@@ -60,18 +68,24 @@ for index in selected_indexes:
         indices.append(index)
         retrievers.append(retriever)
 
-# Query input
 query = st.text_input("Enter your query")
 
-# Perform query and display results
-for index, retriever in zip(indices, retrievers):
-    response_synthesizer = ResponseSynthesizer.from_args(
-    # node_postprocessors=[
-    # ]
+for index in indices:
+    index=load_index_from_storage(storage_context)
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
+    service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size=512)
+    response_synthesizer = ResponseSynthesizer.from_args()
+    TEMPLATE_STR = (
+    "We have provided context information below. \n"
+    "---------------------\n"
+    "{context_str}"
+    "\n---------------------\n"
+    "Given this information, please answer the question: {query_str}\n"
     )
+    QA_TEMPLATE = Prompt(TEMPLATE_STR)
+    query_engine = index.as_query_engine(service_context=service_context, text_qa_template=QA_TEMPLATE, similarity_top_k=3, streaming=True)
 
-    query_engine = RetrieverQueryEngine(retriever, response_synthesizer=response_synthesizer)
     response = query_engine.query(query)
-    st.subheader(f"Results from {type(index).__name__}")
+    st.subheader(f"Results from {index.__class__.__name__}")
     st.write(response)
     st.markdown("---")
