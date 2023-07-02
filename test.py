@@ -128,7 +128,7 @@ service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chun
 query_engine1 = indices1.as_query_engine(service_context=service_context, text_qa_template=QA_TEMPLATE, similarity_top_k=3, streaming=True, )
 
 
-response = query_engine1.query('List the name of institutes')
+response = query_engine1.query('Who is Dr. A.P.J Abdul Kalam')
 
 
 # print("7")
@@ -138,3 +138,5 @@ print(response)
 
 # response.source_nodes
 # print(response.source_nodes)
+
+############## not working ##########

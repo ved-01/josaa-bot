@@ -54,6 +54,8 @@ indices3 = load_index_from_storage(storage_context_3)
 indices4 = load_index_from_storage(storage_context_4)
 # indices1 = load_index_from_storage(storage_context="vector_store")
 
+index = [indices1, indices2, indices3, indices4]
+
 print("3")
 
 print("4")
@@ -88,10 +90,12 @@ llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-t
 service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size=1024)
 
 
-query_engine1 = indices1.as_query_engine(service_context=service_context, text_qa_template=QA_TEMPLATE, similarity_top_k=3, streaming=True, )
 
 
-response = query_engine1.query('What is the closing rank for OPEN Category IIT Kharagpur for Computer Science Gender Neutral?')
+query_engine1 = indices3.as_query_engine(service_context=service_context, text_qa_template=QA_TEMPLATE, similarity_top_k=3, streaming=True, )
+
+
+response = query_engine1.query('How much package has government of india announced?')
 
 
 # print("7")
@@ -101,3 +105,6 @@ print(response)
 
 # response.source_nodes
 print(response.source_nodes)
+
+
+########## working ##########
