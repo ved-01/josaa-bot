@@ -73,6 +73,6 @@ for index, retriever in zip(indices, retrievers):
     response_synthesizer = ResponseSynthesizer.from_args()
     query_engine = RetrieverQueryEngine(retriever, response_synthesizer=response_synthesizer)
     response = query_engine.query(query)
-    st.subheader(f"Results from {type(index)._name_}")
+    st.subheader(f"Results from {index.__class__.__name__}")
     st.write(response)
     st.markdown("---")

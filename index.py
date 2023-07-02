@@ -71,7 +71,6 @@ for index in selected_indexes:
 query = st.text_input("Enter your query")
 
 for index in indices:
-    index=load_index_from_storage(storage_context)
     llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size=512)
     response_synthesizer = ResponseSynthesizer.from_args()
