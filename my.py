@@ -56,7 +56,7 @@ def main():
         )
         QA_TEMPLATE = Prompt(TEMPLATE_STR)
         llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
-        service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size=5000)
+        service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size=1024)
         query_engine = index.as_query_engine(
         service_context=service_context,
         text_qa_template=QA_TEMPLATE,
